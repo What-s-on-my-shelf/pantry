@@ -52,7 +52,34 @@ class InventoryManager extends ChangeNotifier {
       return difference >= 0 && difference <= withinDays;
     }).toList();
   }
-// Add this new method inside your InventoryManager class
+
+// Method to make shopping lists editable
+void createNewShoppingList(String storeName) {
+  // Prevent duplicate store names
+  if (_shoppingLists.any((list) => list.storeName.toLowerCase() == storeName.toLowerCase())) {
+    return;
+  }
+  _shoppingLists.add(ShoppingList(storeName: storeName, items: []));
+  notifyListeners();
+}
+
+void addItemToShoppingList(String storeName, String itemName, int quantity) {
+  try {
+    final list = _shoppingLists.firstWhere((sl) => sl.storeName == storeName);
+    // Optional: check if item already exists and just update quantity
+    list.items.add(ShoppingListItem(name: itemName, quantity: quantity));
+    notifyListeners();
+  } catch (e) {
+    // List not found
+  }
+}
+
+// Method to delete shopping lists
+
+void deleteShoppingList(String storeName) {
+  _shoppingLists.removeWhere((list) => list.storeName == storeName);
+  notifyListeners();
+}
 
 void removeFromShoppingList(String storeName, ShoppingListItem itemToRemove) {
   try {
