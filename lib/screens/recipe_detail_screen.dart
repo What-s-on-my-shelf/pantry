@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/recipe.dart';
+import 'add_edit_recipe_screen.dart';
 import '../services/inventory_manager.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RecipeDetailScreen extends StatelessWidget {
   final Recipe recipe;
@@ -14,9 +16,27 @@ class RecipeDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const FaIcon(FontAwesomeIcons.arrowLeft),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(recipe.name),
         backgroundColor: Colors.grey[900],
-      ),
+
+      actions: [
+        IconButton(
+          icon: const FaIcon(FontAwesomeIcons.penToSquare),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => AddEditRecipeScreen(recipe: recipe),
+              ),
+            );
+          },
+        ),
+      ],
+    ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -37,8 +57,9 @@ class RecipeDetailScreen extends StatelessWidget {
                   final haveEnough = availableQty >= requiredQty;
 
                   return ListTile(
-                    leading: Icon(
-                      haveEnough ? Icons.check_circle : Icons.cancel,
+                    // 2. Replace the Icon widget with the FaIcon widget
+                    leading: FaIcon(
+                      haveEnough ? FontAwesomeIcons.circleCheck : FontAwesomeIcons.circleXmark,
                       color: haveEnough ? Colors.green : Colors.red,
                     ),
                     title: Text('$requiredQty x $ingredientName', style: const TextStyle(color: Colors.white)),

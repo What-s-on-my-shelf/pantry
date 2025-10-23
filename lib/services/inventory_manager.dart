@@ -45,13 +45,13 @@ class InventoryManager extends ChangeNotifier {
   }
 
   // --- LOGIC METHODS ---
-  List<InventoryItem> getExpiringItems({int withinDays = 5}) {
+  List<InventoryItem> getExpiringItems({required int withinDays}) {
     final now = DateTime.now();
     return _inventory.where((item) {
       final difference = item.expirationDate.difference(now).inDays;
       return difference >= 0 && difference <= withinDays;
     }).toList();
-  }
+}
 
 // Method to make shopping lists editable
 void createNewShoppingList(String storeName) {
@@ -103,7 +103,22 @@ void updateItemQuantity(String itemId, int newQuantity) {
     // Item not found, do nothing
   }
 }
+void editRecipe(String recipeId, String newName, Map<String, int> newIngredients) {
+  try {
+    final recipe = _recipes.firstWhere((r) => r.id == recipeId);
+    recipe.name = newName;
+    recipe.ingredients = newIngredients;
+    notifyListeners();
+  } catch (e) {
+    // Recipe not found
+  }
+}
 
+// Delete recipes
+void deleteRecipe(String recipeId) {
+  _recipes.removeWhere((recipe) => recipe.id == recipeId);
+  notifyListeners();
+}
 void updateExpirationDate(String itemId, DateTime newDate) {
   try {
     final item = _inventory.firstWhere((item) => item.id == itemId);

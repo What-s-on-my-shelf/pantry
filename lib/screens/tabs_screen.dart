@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-import 'inventory_screen.dart'; // We will create this next
+import 'inventory_screen.dart'; 
 import 'recipes_screen.dart';
 import 'shopping_lists_screen.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -41,22 +42,22 @@ final List<Widget> _pages = [
         type: BottomNavigationBarType.fixed, // Keeps all labels visible
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
-          ),
+          icon: FaIcon(FontAwesomeIcons.house), // <-- Replace Icon(Icons.dashboard)
+          label: 'Dashboard',
+  ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.kitchen),
+            icon: FaIcon(FontAwesomeIcons.warehouse),
             label: 'Inventory',
-          ),
+  ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book),
+            icon: FaIcon(FontAwesomeIcons.bookOpen),
             label: 'Recipes',
-          ),
+  ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
+            icon: FaIcon(FontAwesomeIcons.cartShopping),
             label: 'Lists',
-          ),
-        ],
+  ),
+],
       ),
     );
   }

@@ -1,9 +1,14 @@
-import 'package:flutter/material.dart'; // Correct: package:flutter
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/recipe.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/inventory_manager.dart';
 
 class AddEditRecipeScreen extends StatefulWidget {
-  const AddEditRecipeScreen({super.key});
+  // 1. Add an optional recipe property
+  final Recipe? recipe;
+
+  const AddEditRecipeScreen({super.key, this.recipe});
 
   @override
   State<AddEditRecipeScreen> createState() => _AddEditRecipeScreenState();
@@ -11,28 +16,31 @@ class AddEditRecipeScreen extends StatefulWidget {
 
 class _AddEditRecipeScreenState extends State<AddEditRecipeScreen> {
   final _recipeNameController = TextEditingController();
-  
-  // List to hold a pair of controllers for each ingredient
   final List<Map<String, TextEditingController>> _ingredientControllers = [];
 
   @override
   void initState() {
     super.initState();
-    // Start with one empty ingredient field
-    _addIngredientField();
+    if (widget.recipe != null) {
+      _recipeNameController.text = widget.recipe!.name;
+      for (var ingredient in widget.recipe!.ingredients.entries) {
+        _addIngredientField(name: ingredient.key, quantity: ingredient.value.toString());
+      }
+    } else {
+      _addIngredientField();
+    }
   }
 
-  void _addIngredientField() {
+  void _addIngredientField({String name = '', String quantity = ''}) {
     setState(() {
       _ingredientControllers.add({
-        'name': TextEditingController(),
-        'quantity': TextEditingController(),
+        'name': TextEditingController(text: name),
+        'quantity': TextEditingController(text: quantity),
       });
     });
   }
 
   void _removeIngredientField(int index) {
-    // First, dispose the controllers to prevent memory leaks
     _ingredientControllers[index]['name']!.dispose();
     _ingredientControllers[index]['quantity']!.dispose();
     setState(() {
@@ -42,7 +50,7 @@ class _AddEditRecipeScreenState extends State<AddEditRecipeScreen> {
   
   void _saveRecipe() {
     final recipeName = _recipeNameController.text;
-    if (recipeName.isEmpty) return; // Basic validation
+    if (recipeName.isEmpty) return;
 
     final Map<String, int> ingredients = {};
     for (var controllerPair in _ingredientControllers) {
@@ -53,10 +61,20 @@ class _AddEditRecipeScreenState extends State<AddEditRecipeScreen> {
       }
     }
 
-    if (ingredients.isEmpty) return; // More validation
+    if (ingredients.isEmpty) return;
+    
+    final manager = Provider.of<InventoryManager>(context, listen: false);
 
-    Provider.of<InventoryManager>(context, listen: false).addRecipe(recipeName, ingredients);
+    if (widget.recipe != null) {
+      manager.editRecipe(widget.recipe!.id, recipeName, ingredients);
+    } else {
+      manager.addRecipe(recipeName, ingredients);
+    }
+    // Pop twice if editing to get back to the main recipe list
     Navigator.of(context).pop();
+    if (widget.recipe != null) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -69,11 +87,16 @@ class _AddEditRecipeScreenState extends State<AddEditRecipeScreen> {
     super.dispose();
   }
 
+  // --- THIS IS THE MISSING METHOD ---
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add New Recipe'),
+        leading: IconButton(
+          icon: const FaIcon(FontAwesomeIcons.arrowLeft),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(widget.recipe == null ? 'Add New Recipe' : 'Edit Recipe'),
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
@@ -117,7 +140,7 @@ class _AddEditRecipeScreenState extends State<AddEditRecipeScreen> {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
+                        icon: const FaIcon(FontAwesomeIcons.trashCan, color: Colors.red),
                         onPressed: () => _removeIngredientField(index),
                       ),
                     ],

@@ -1,42 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/inventory_manager.dart';
+import '../services/settings_manager.dart';
 
 class NotificationPanel extends StatelessWidget {
   const NotificationPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Access the InventoryManager
-    final inventoryManager = Provider.of<InventoryManager>(context);
-    final expiringItems = inventoryManager.getExpiringItems();
+    return Consumer2<InventoryManager, SettingsManager>(
+      builder: (context, inventoryManager, settingsManager, child) {
+        
+        final expiringItems = inventoryManager.getExpiringItems(
+          withinDays: settingsManager.expirationWarningDays,
+        );
 
-    return Column(
-      children: [
-        // Dynamically create a row for each expiring item
-        ...expiringItems.map((item) {
-          final daysLeft = item.expirationDate.difference(DateTime.now()).inDays;
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: NotificationRow(
-              text: '${item.name} will expire in ${daysLeft + 1} days',
-              color: Colors.red,
+        return Column(
+          children: [
+            ...expiringItems.map((item) {
+              final daysLeft = item.expirationDate.difference(DateTime.now()).inDays;
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: NotificationRow(
+                  text: '${item.name} will expire in ${daysLeft + 1} days',
+                  color: Colors.red,
+                  icon: FontAwesomeIcons.triangleExclamation,
+                ),
+              );
+            }).toList(),
+
+            const NotificationRow(
+              text: 'Click here for recipes to use these ingredients',
+              color: Colors.green,
+              icon: FontAwesomeIcons.faceSmile,
             ),
-          );
-        }).toList(),
-
-        // The static recipe suggestion row
-        const NotificationRow(
-          text: 'Click here for recipes to use these ingredients',
-          color: Colors.green,
-          icon: Icons.arrow_forward_ios,
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 }
 
-// Helper widget remains the same
 class NotificationRow extends StatelessWidget {
   final String text;
   final Color color;
@@ -46,14 +51,14 @@ class NotificationRow extends StatelessWidget {
     super.key,
     required this.text,
     required this.color,
-    this.icon = Icons.circle,
+    this.icon = FontAwesomeIcons.circle,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, color: color, size: 16),
+        FaIcon(icon, color: color, size: 16),
         const SizedBox(width: 12),
         Expanded(
           child: Text(

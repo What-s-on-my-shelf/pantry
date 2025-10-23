@@ -27,6 +27,10 @@ dependencies:
   provider: ^6.1.2     # For state management
   http: ^1.2.1         # For API calls (barcode lookup)
   intl: ^0.20.2        # For formatting dates
+  font_awesome_flutter: ^10.7.0 # Font package
+  shared_preferences: ^2.2.2 # Allows for saved variables
+
+
 
 dev_dependencies:
   flutter_test:
