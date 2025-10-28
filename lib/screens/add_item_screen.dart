@@ -4,21 +4,34 @@ import 'package:provider/provider.dart';
 import '../services/inventory_manager.dart';
 
 class AddItemScreen extends StatefulWidget {
-  const AddItemScreen({super.key});
+  // 1. Add an optional barcode field
+  final String? barcode;
+
+  const AddItemScreen({super.key, this.barcode});
 
   @override
   State<AddItemScreen> createState() => _AddItemScreenState();
 }
 
 class _AddItemScreenState extends State<AddItemScreen> {
-  // Controllers to manage the text in the TextFields
   final _nameController = TextEditingController();
   final _quantityController = TextEditingController();
-
-  // A variable to hold the selected expiration date
   DateTime? _selectedDate;
 
-  // Function to show the date picker
+  // 2. Add initState to pre-fill the form
+  @override
+  void initState() {
+    super.initState();
+    if (widget.barcode != null) {
+      // In a real app, you'd call an API here to get the product name
+      // For now, we just put the barcode number in the name field
+      _nameController.text = "Scanned: ${widget.barcode!}";
+    }
+  }
+
+  // ... (keep _presentDatePicker and _submitData methods exactly as they are) ...
+  
+  // (Paste your existing _presentDatePicker method here)
   void _presentDatePicker() {
     showDatePicker(
       context: context,
@@ -34,7 +47,8 @@ class _AddItemScreenState extends State<AddItemScreen> {
       });
     });
   }
-  
+
+  // (Paste your existing _submitData method here)
   void _submitData() {
     final enteredName = _nameController.text;
     final enteredQuantity = int.tryParse(_quantityController.text);
@@ -45,16 +59,16 @@ class _AddItemScreenState extends State<AddItemScreen> {
       return;
     }
     
-    // Use Provider to call the addItem method. listen: false is important here.
     Provider.of<InventoryManager>(context, listen: false)
       .addItem(enteredName, enteredQuantity, _selectedDate!);
       
-    // Close the screen after saving
     Navigator.of(context).pop();
   }
 
+
   @override
   Widget build(BuildContext context) {
+    // ... (rest of the build method is the same)
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add New Item'),
@@ -93,7 +107,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 ),
               ],
             ),
-            const Spacer(), // Pushes the button to the bottom
+            const Spacer(), 
             ElevatedButton(
               onPressed: _submitData,
               style: ElevatedButton.styleFrom(

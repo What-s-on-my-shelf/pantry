@@ -5,26 +5,40 @@ import 'services/inventory_manager.dart';
 import 'services/settings_manager.dart';
 
 Future<void> main() async {
+  // 1. Ensure all plugins are ready
   WidgetsFlutterBinding.ensureInitialized();
 
+  // 2. Create instances of both managers
   final settingsManager = SettingsManager();
-  await settingsManager.loadSettings();
+  final inventoryManager = InventoryManager();
 
-  // This is the line that needs to pass the argument
-  runApp(MyApp(settingsManager: settingsManager)); 
+  // 3. Load all data from the device *before* the app runs
+  await settingsManager.loadSettings();
+  await inventoryManager.loadData(); // <-- ADD THIS LINE
+
+  // 4. Pass both managers to the app
+  runApp(MyApp(
+    settingsManager: settingsManager,
+    inventoryManager: inventoryManager,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final SettingsManager settingsManager;
+  final InventoryManager inventoryManager;
   
-  // This is the constructor that requires the argument
-  const MyApp({super.key, required this.settingsManager});
+  const MyApp({
+    super.key, 
+    required this.settingsManager,
+    required this.inventoryManager,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => InventoryManager()),
+        // 5. Provide the already-loaded instances
+        ChangeNotifierProvider.value(value: inventoryManager),
         ChangeNotifierProvider.value(value: settingsManager),
       ],
       child: MaterialApp(

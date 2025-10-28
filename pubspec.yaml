@@ -29,6 +29,10 @@ dependencies:
   intl: ^0.20.2        # For formatting dates
   font_awesome_flutter: ^10.7.0 # Font package
   shared_preferences: ^2.2.2 # Allows for saved variables
+  sqflite: ^2.3.3       # For saving data
+  path: ^1.9.0
+  mobile_scanner: ^5.1.1  # For barcode scanner
+  permission_handler: ^11.3.1
 
 
 
