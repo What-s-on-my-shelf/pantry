@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/inventory_manager.dart';
-import '../models/shopping_list.dart'; // We need this model
+import '../models/shopping_list.dart';
 
 class ShoppingListPreview extends StatelessWidget {
   const ShoppingListPreview({super.key});
@@ -47,7 +47,6 @@ class ShoppingListPreview extends StatelessWidget {
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 10),
-            // Take the first 3 items to not overflow the card
             ...items.take(3).map((item) => Text(
               '- ${item.name}',
               style: const TextStyle(fontSize: 16, color: Colors.white70),

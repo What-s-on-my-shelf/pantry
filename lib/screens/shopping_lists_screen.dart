@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/inventory_manager.dart';
 import '../widgets/shopping_checklist.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ShoppingListsScreen extends StatefulWidget {
   const ShoppingListsScreen({super.key});
@@ -111,8 +112,8 @@ class _ShoppingListsScreenState extends State<ShoppingListsScreen> with SingleTi
         // --- ADD THE ACTIONS PROPERTY FOR THE DELETE BUTTON ---
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
-            onPressed: shoppingLists.isEmpty ? null : _confirmDeleteList, // Disable if no lists
+            icon: const FaIcon(FontAwesomeIcons.trashCan, color: Colors.redAccent),
+            onPressed: shoppingLists.isEmpty ? null : _confirmDeleteList,
           ),
         ],
         bottom: shoppingLists.isEmpty 
@@ -132,8 +133,8 @@ class _ShoppingListsScreenState extends State<ShoppingListsScreen> with SingleTi
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddListDialog,
         backgroundColor: Colors.teal,
-        child: const Icon(Icons.add),
-      ),
+        child: const FaIcon(FontAwesomeIcons.plus, size: 30), // <-- UPDATE THIS LINE
+),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/shopping_list.dart';
 import '../services/inventory_manager.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // 1. Convert this to a StatefulWidget
 class ShoppingChecklist extends StatefulWidget {
@@ -65,7 +66,7 @@ class _ShoppingChecklistState extends State<ShoppingChecklist> {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.add_circle, color: Colors.teal, size: 30),
+                icon: const FaIcon(FontAwesomeIcons.pencil, color: Colors.teal),
                 onPressed: _addItemToList,
               )
             ],
