@@ -42,13 +42,25 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   integration_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.10
 
 flutter:
   assets:
     - assets/
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21
 
-
+flutter_native_splash:
+  color: "#121212" # This is your app's dark background color
+  image: "assets/icon/icon.png" # Use your icon, or a different logo image
+  android_12:
+    color: "#121212"
+    image: "assets/icon/icon.png"
 
   # To add assets to your application, add an assets section, like this:
   # assets:
