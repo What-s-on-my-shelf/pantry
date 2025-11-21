@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import '../services/inventory_manager.dart';
-import '../services/settings_manager.dart';
 import '../widgets/inventory_glance.dart';
 import '../widgets/notification_panel.dart';
 import '../widgets/shopping_list_preview.dart';
