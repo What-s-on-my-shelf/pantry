@@ -44,7 +44,7 @@ We use unit tests to verify the logic of our data models.
 - **Purpose:** Ensures data converts correctly to/from the database (JSON/Map conversion) and that logic is sound.
 - **Run Command:**
   ```bash
-  flutter test test/models_test.dart
+  flutter test test/models_test.dart"
 
 ### 2. Widget Tests (test/inventory_list_item_test.dart)
 We use widget tests to verify that individual UI components render correctly.
@@ -54,8 +54,8 @@ We use widget tests to verify that individual UI components render correctly.
 - **Purpose:** Verifies that the widget displays the correct name, quantity, and expiration date when provided with data.
 
 - **Run Command:**
- ```bash
- flutter test test/inventory_list_item_test.dart
+   ```bash
+   flutter test test/inventory_list_item_test.dart
  
 ### 3. Integration Tests (integration_test/app_test.dart)
 We use integration tests to simulate a real user interacting with the app on a device.
@@ -81,17 +81,17 @@ Connect your Android device via USB (ensure USB Debugging is enabled in Develope
 
 Run the following command in the project terminal:
 
-Bash
+  bash
+  flutter run
 
-flutter run
 Option B: Install Release APK
 To generate a standalone file that you can install on any Android device:
 
 Build the APK:
 
-Bash
+  bash
+  flutter build apk --release
 
-flutter build apk --release
 The file will be created at: build/app/outputs/flutter-apk/app-release.apk.
 
 Transfer this file to your phone (via USB, Drive, etc.) and tap it to install.
@@ -101,10 +101,10 @@ Option A: Run Debug Version
 Open the iOS Simulator OR connect your iPhone via USB.
 
 Run the following command:
+  
+  bash
+  flutter run
 
-Bash
-
-flutter run
 Note: If using a physical iPhone, you must open ios/Runner.xcworkspace in Xcode and sign the app with your Apple ID.
 
 Option B: Install via TestFlight
@@ -119,11 +119,11 @@ Install the app on your device using the TestFlight app.
 ## Troubleshooting ##
 "CMake Error" on Windows: If you see a CMake error regarding generated_config.cmake, run:
 
-Bash
-
-flutter clean
-flutter pub get
-flutter run -d windows
+  bash
+  
+  flutter clean
+  flutter pub get
+  flutter run -d windows
 "Symlink support" Error on Windows: Enable Developer Mode in Windows Settings:
 
 Go to Settings > Update & Security > For developers.
