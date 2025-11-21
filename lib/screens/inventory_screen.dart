@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import '../models/inventory_item.dart';
 import '../services/inventory_manager.dart';
 import '../widgets/inventory_list_item.dart';
 import 'add_item_screen.dart';
